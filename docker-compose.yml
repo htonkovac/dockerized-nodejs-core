@@ -40,5 +40,6 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ADMIN_PASS}
     depends_on:
       - mongo
+      - combishackaton
 networks: 
   backend:

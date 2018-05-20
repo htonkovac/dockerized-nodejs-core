@@ -1,4 +1,3 @@
-#can't use apline because bcrypt needs python denedancy
 FROM node:9.11 
 
 ENV NODE_ENV production
