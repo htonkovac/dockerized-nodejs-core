@@ -22,8 +22,9 @@ services:
       MONGO_DATA_DIR: "/data/db"
     volumes:
       - /data/db
-    ports:
-      - ${MONGO_PORT}:27017
+    expose:
+      - "27017"
+      
     networks:
       backend:
         aliases: 
@@ -32,13 +33,12 @@ services:
   mongo-express:
     image: mongo-express
     ports: 
-      - 8001:8081
+      - 8081:8081
     networks: 
       - backend
     environment: 
       ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ADMIN_USER}
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ADMIN_PASS}
-      ME_CONFIG_MONGODB_PORT: ${MONGO_PORT}
     depends_on:
       - mongo
       - combishackaton
