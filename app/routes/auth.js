@@ -4,16 +4,32 @@ const passport = require('passport')
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.json({greeting:"auth"});
+router.get('/', function (req, res, next) {
+  res.json({ greeting: "auth" });
 });
 
-router.post('/login', function(req, res, next) {
-  res.json({greeting:"login"});
+router.post('/login', function (req, res, next) {
+  res.json({ greeting: "login" });
 });
 
-router.post('/register', function(req, res, next) {
-  res.json({greeting:"login"});
+router.post('/register', function (req, res, next) {
+  if (!req.body.email || !req.body.password) {
+    res.json({ success: false, message: 'Please enter email and password.' });
+  } else {
+    var newUser = new User({
+      email: req.body.email,
+      password: req.body.password
+    });
+
+    // Attempt to save the user
+    newUser.save(function (err) {
+      if (err) {
+        return res.json({ success: false, message: 'That email address already exists.' });
+      }
+      res.json({ success: true, message: 'Successfully created new user.' });
+    });
+  }
+
 });
 
 
