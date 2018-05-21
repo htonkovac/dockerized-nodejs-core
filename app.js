@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const config = require('./config/general');
+const config = require('./app/config/general');
 
 
 const indexRouter = require('./app/routes/index');
