@@ -42,5 +42,6 @@ services:
     depends_on:
       - mongo
       - combishackaton
+    command: tini -- bash -c 'sleep 5 && node app'
 networks: 
   backend:
