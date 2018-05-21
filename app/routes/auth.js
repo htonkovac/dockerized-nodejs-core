@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-  res.json({ greeting: "login" });
+  res.json({ greeting: "login_hello" });
 });
 
 router.post('/register', function (req, res, next) {
