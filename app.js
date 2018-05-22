@@ -21,7 +21,18 @@ mongoose.connect(config.database)
   .then(
     () => { console.log('Database connection established sucessfullly!') })
   .catch(
-    err => { throw err;})
+    err => {
+      //maybe mongoDB container is slow to start
+      await setTimeout(null, 3000);
+      mongoose.connect(config.database)
+        .then(
+          () => { console.log('Database connection established sucessfullly!') })
+        .catch(
+          err => { throw err }
+        )
+
+    })
+
 
 
 app.use(morgan('dev'));

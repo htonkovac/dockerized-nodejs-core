@@ -36,7 +36,7 @@ UserSchema.pre('save',
                 },
                 err => next(err)
             )
-
+  
         } else {
             return next()
         }

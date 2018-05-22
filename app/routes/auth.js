@@ -7,7 +7,8 @@ const HttpStatus = require('http-status-codes');
 
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/deleteall', function (req, res, next) {
+  User.remove({})
   res.json({ greeting: "auth" });
 });
 
@@ -25,25 +26,15 @@ router.post('/register', function (req, res, next) {
     email: req.body.email,
     password: req.body.password
   });
-  
+
   // Attempt to save the user
   newUser.save(err => {
     if(err) {
-      res.status(HttpStatus.IM_A_TEAPOT).json({ success: false, message: err.message});
+      return res.status(HttpStatus.IM_A_TEAPOT).json({ success: false, message: err.message});
     }
-    res.status(HttpStatus.IM_A_TEAPOT).json({ success: true, message: newUser});
+    return res.status(HttpStatus.IM_A_TEAPOT).json({ success: true, message: newUser});
 
   });
-  // newUser.save(function (err) {
-  //   console.log('peins')
-  //   if (err) {
-  //     return res.json({ success: false, message: err.message });
-  //   }
-
-  //   return res.json({ success: true, message: 'Successfully created new user.' });
-  // });
-
-    // return res.json({ success: true, message: '.' });
 
 });
 
