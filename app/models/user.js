@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save',
     function (next) {
+        console.log(this);
         if (this.isModified('password') || this.isNew) {
             bcrypt.genSalt(10).then(
                 (salt) => {
@@ -35,7 +36,7 @@ UserSchema.pre('save',
                         err => next(err)
                     )
                 },
-                err => next(err)
+                (err) => next(err)
             )
         } else {
             return next()
