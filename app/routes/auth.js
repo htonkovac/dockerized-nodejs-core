@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-  res.json({ greeting: "login_hello" });
+  res.json({ greeting: "login_hello" }); 
 });
 
 router.post('/register', function (req, res, next) {
@@ -25,16 +25,25 @@ router.post('/register', function (req, res, next) {
     email: req.body.email,
     password: req.body.password
   });
-  return res.json({ success: true, user: newUser });
+  
   // Attempt to save the user
-  newUser.save(function (err) {
-    if (err) {
-      return res.json({ success: false, message: err.message });
+  newUser.save(err => {
+    if(err) {
+      res.status(HttpStatus.IM_A_TEAPOT).json({ success: false, message: err.message});
     }
+    res.status(HttpStatus.IM_A_TEAPOT).json({ success: true, message: newUser});
 
-    return res.json({ success: true, message: 'Successfully created new user.' });
   });
+  // newUser.save(function (err) {
+  //   console.log('peins')
+  //   if (err) {
+  //     return res.json({ success: false, message: err.message });
+  //   }
 
+  //   return res.json({ success: true, message: 'Successfully created new user.' });
+  // });
+
+    // return res.json({ success: true, message: '.' });
 
 });
 

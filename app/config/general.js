@@ -9,7 +9,7 @@ const mongo = {
 const config = {
     mongo: mongo,
     jwtsecret: process.env.JWT_SECRET,
-    database: 'mongodb://' + mongo.user + ':' + mongo.pass + mongo.networkAlias + ':27017/' + mongo.dbName
+    database: 'mongodb://' + mongo.user + ':' + mongo.pass +'@'+ mongo.networkAlias + ':27017/' + mongo.dbName+'?authSource=admin'
 }
 
 module.exports = config

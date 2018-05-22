@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -24,7 +23,6 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save',
     function (next) {
-        console.log(this);
         if (this.isModified('password') || this.isNew) {
             bcrypt.genSalt(10).then(
                 (salt) => {
@@ -36,21 +34,24 @@ UserSchema.pre('save',
                         err => next(err)
                     )
                 },
-                (err) => next(err)
+                err => next(err)
             )
+
         } else {
             return next()
         }
     })
 
 
-UserSchema.methods.checkPassword = (passwordInput, callback) => {
-    bcrypt.compare(passwordInput, this.password).then(
-        (isSame) => {
-            return callback(null, isSame)
-        },
-        err => callback(err, null)
-    )
+UserSchema.methods = {
+    checkPassword: (passwordInput, callback) => {
+        bcrypt.compare(passwordInput, this.password).then(
+            (isSame) => {
+                return callback(null, isSame)
+            },
+            err => callback(err, null)
+        )
+    }
 }
 
 module.exports = mongoose.model("User", UserSchema);

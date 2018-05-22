@@ -16,11 +16,13 @@ const authRouter = require('./app/routes/auth');
 const app = express();
 app.use(passport.initialize())
 require('./app/config/passport')(passport);
+// console.log(config.database) 
+mongoose.connect(config.database)
+  .then(
+    () => { console.log('Database connection established sucessfullly!') })
+  .catch(
+    err => { throw err;})
 
-mongoose.connect(config.database).catch(
-  err => {
-    // setTimeout(mongoose.connect(config.database), 2000)
-  })
 
 app.use(morgan('dev'));
 app.use(cookieParser());
