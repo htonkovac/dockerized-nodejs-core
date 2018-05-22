@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport')
+const passport = require('passport');
+const User = require('../models/user')
 
 
 /* GET home page. */
@@ -17,6 +18,7 @@ router.post('/register', function (req, res, next) {
     res.json({ success: false, message: 'Please enter email and password.' });
   } else {
     var newUser = new User({
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password
     });
@@ -24,7 +26,7 @@ router.post('/register', function (req, res, next) {
     // Attempt to save the user
     newUser.save(function (err) {
       if (err) {
-        return res.json({ success: false, message: 'That email address already exists.' });
+        return res.json({ success: false, message: err.message });
       }
       res.json({ success: true, message: 'Successfully created new user.' });
     });
