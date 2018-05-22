@@ -3,18 +3,44 @@ const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
 const HttpStatus = require('http-status-codes');
-
+const jwt = require('jsonwebtoken');
+const config = require('../config/general')
 
 
 /* GET home page. */
-router.get('/deleteall', function (req, res, next) {
-  User.remove({})
-  res.json({ greeting: "auth" });
+router.get('/hello', passport.authenticate('jwt', { session: false }), function (req, res, next) {
+  // User.remove({})
+  res.json({ greeting: "you are authed" });
 });
 
+/* POST login. */
 router.post('/login', function (req, res, next) {
-  res.json({ greeting: "login_hello" }); 
+  User.findOne({
+    email: req.body.email
+  }, (err, user) => {
+    if (err) throw err;
+
+    if (!user) {
+      return res.status(HttpStatus.NOT_FOUND).send({ success: false, message: 'Authentication failed. User not found.' });
+    } else {
+      // Check if password matches
+      user.comparePassword(req.body.password, function (err, isMatch) {
+        if (err) { return res.send({ success: false, message: err + 'hi!'}); }
+        if (isMatch && !err) {
+          // Create token if the password matched and no error was thrown
+          console.log(user) 
+          var token = jwt.sign(user.toJSON(), config.jwtsecret, {
+            expiresIn: 10080 // in seconds
+          });
+          return res.json({ success: true, token: 'JWT ' + token, user: user });
+        } else {
+          return res.send({ success: false, message: 'Authentication failed. Passwords did not match.' });
+        }
+      });
+    }
+  });
 });
+
 
 router.post('/register', function (req, res, next) {
   if (!req.body.email || !req.body.password) {
@@ -29,10 +55,10 @@ router.post('/register', function (req, res, next) {
 
   // Attempt to save the user
   newUser.save(err => {
-    if(err) {
-      return res.status(HttpStatus.IM_A_TEAPOT).json({ success: false, message: err.message});
+    if (err) {
+      return res.status(HttpStatus.IM_A_TEAPOT).json({ success: false, message: err.message });
     }
-    return res.status(HttpStatus.IM_A_TEAPOT).json({ success: true, message: newUser});
+    return res.status(HttpStatus.IM_A_TEAPOT).json({ success: true, user: newUser });
 
   });
 
