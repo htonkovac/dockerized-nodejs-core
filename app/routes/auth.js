@@ -56,9 +56,9 @@ router.post('/register', function (req, res, next) {
   // Attempt to save the user
   newUser.save(err => {
     if (err) {
-      return res.status(HttpStatus.IM_A_TEAPOT).json({ success: false, message: err.message });
+      return res.status(HttpStatus.CONFLICT).json({ success: false, message: err.message });
     }
-    return res.status(HttpStatus.IM_A_TEAPOT).json({ success: true, user: newUser });
+    return res.status(HttpStatus.OK).json({ success: true, user: newUser });
 
   });
 
