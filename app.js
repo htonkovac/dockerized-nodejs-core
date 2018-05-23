@@ -6,13 +6,17 @@ const morgan = require('morgan');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const config = require('./app/config/general');
+const cors = require('./app/config/cors');
 const initConnection = require('./app/config/initConnection');
+
+
 
 const indexRouter = require('./app/routes/index');
 const usersRouter = require('./app/routes/users');
 const authRouter = require('./app/routes/auth');
 
 const app = express();
+app.use(cors)
 app.use(passport.initialize())
 require('./app/config/passport')(passport);
 initConnection(config.database);
