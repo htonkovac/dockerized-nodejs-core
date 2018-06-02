@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const config = require('./app/config/general');
 const cors = require('./app/config/cors');
-const initConnection = require('./app/config/initConnection');
+const initDbConnection = require('./app/config/initDbConnection');
 
 
 
@@ -19,7 +19,7 @@ const app = express();
 app.use(cors)
 app.use(passport.initialize())
 require('./app/config/passport')(passport);
-initConnection(config.database);
+initDbConnection(config.databaseConnectionString);
 
 app.use(morgan('dev'));
 app.use(cookieParser());
